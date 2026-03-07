@@ -1,0 +1,215 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── CSS Variables ──────────────────────────────────────────── */
+:root {
+  --font-inter: 'Inter', sans-serif;
+  --font-playfair: 'Playfair Display', serif;
+
+  --color-primary: #800020;
+  --color-primary-dark: #5c0016;
+  --color-primary-light: #a0002a;
+  --color-accent: #c9a84c;
+  --color-accent-dark: #a88930;
+  --color-accent-light: #dfc06e;
+  --color-background: #faf7f2;
+  --color-background-dark: #f0ebe0;
+  --color-text: #2c2c2c;
+  --color-text-light: #4a4a4a;
+}
+
+/* ─── Base Styles ────────────────────────────────────────────── */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-brand-ivory text-brand-charcoal font-inter antialiased;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-playfair;
+  }
+
+  *:focus-visible {
+    @apply outline-none ring-2 ring-brand-maroon ring-offset-2;
+  }
+
+  ::selection {
+    @apply bg-brand-maroon text-white;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-brand-ivory-dark;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-brand-maroon rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-brand-maroon-dark;
+  }
+}
+
+/* ─── Component Classes ──────────────────────────────────────── */
+@layer components {
+  /* Container */
+  .container-brand {
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Typography */
+  .heading-xl {
+    @apply font-playfair text-4xl font-bold text-brand-charcoal sm:text-5xl lg:text-6xl;
+  }
+
+  .heading-lg {
+    @apply font-playfair text-3xl font-bold text-brand-charcoal sm:text-4xl;
+  }
+
+  .heading-md {
+    @apply font-playfair text-2xl font-semibold text-brand-charcoal sm:text-3xl;
+  }
+
+  .heading-sm {
+    @apply font-playfair text-xl font-semibold text-brand-charcoal sm:text-2xl;
+  }
+
+  /* Gold divider */
+  .gold-divider {
+    @apply mx-auto h-1 w-16 rounded-full bg-brand-gold;
+  }
+
+  /* Section padding */
+  .section-padding {
+    @apply py-16 sm:py-20 lg:py-24;
+  }
+
+  /* Buttons */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-none bg-brand-maroon px-8 py-3 text-sm font-semibold uppercase tracking-widest text-white transition-all duration-300 hover:bg-brand-maroon-dark hover:shadow-brand focus:outline-none focus:ring-2 focus:ring-brand-maroon focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-none border-2 border-brand-maroon px-8 py-3 text-sm font-semibold uppercase tracking-widest text-brand-maroon transition-all duration-300 hover:bg-brand-maroon hover:text-white focus:outline-none focus:ring-2 focus:ring-brand-maroon focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .btn-gold {
+    @apply inline-flex items-center justify-center gap-2 rounded-none bg-brand-gold px-8 py-3 text-sm font-semibold uppercase tracking-widest text-brand-charcoal transition-all duration-300 hover:bg-brand-gold-dark hover:shadow-gold focus:outline-none focus:ring-2 focus:ring-brand-gold focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-none px-4 py-2 text-sm font-medium text-brand-charcoal-light transition-colors duration-200 hover:text-brand-maroon focus:outline-none;
+  }
+
+  .btn-icon {
+    @apply flex items-center justify-center rounded-full p-2 text-brand-charcoal transition-colors duration-200 hover:bg-brand-ivory-dark hover:text-brand-maroon;
+  }
+
+  /* Cards */
+  .card-product {
+    @apply relative overflow-hidden bg-white shadow-sm transition-all duration-300 hover:shadow-brand;
+  }
+
+  /* Form inputs */
+  .input-brand {
+    @apply block w-full rounded-none border border-gray-300 bg-white px-4 py-3 text-sm text-brand-charcoal placeholder-gray-400 transition-colors duration-200 focus:border-brand-maroon focus:outline-none focus:ring-1 focus:ring-brand-maroon;
+  }
+
+  .label-brand {
+    @apply mb-1.5 block text-sm font-medium text-brand-charcoal;
+  }
+
+  /* Badge */
+  .badge {
+    @apply inline-flex items-center rounded-none px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider;
+  }
+
+  .badge-new {
+    @apply badge bg-brand-maroon text-white;
+  }
+
+  .badge-sale {
+    @apply badge bg-brand-gold text-brand-charcoal;
+  }
+
+  .badge-sold-out {
+    @apply badge bg-gray-200 text-gray-600;
+  }
+
+  /* Skeleton loader */
+  .skeleton {
+    @apply animate-shimmer bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 bg-[length:200%_100%];
+  }
+
+  /* Price */
+  .price-current {
+    @apply font-playfair text-xl font-semibold text-brand-maroon;
+  }
+
+  .price-compare {
+    @apply text-sm text-gray-400 line-through;
+  }
+
+  /* Navigation */
+  .nav-link {
+    @apply text-sm font-medium uppercase tracking-widest text-brand-charcoal transition-colors duration-200 hover:text-brand-maroon;
+  }
+
+  .nav-link-active {
+    @apply nav-link text-brand-maroon;
+  }
+
+  /* Breadcrumb */
+  .breadcrumb {
+    @apply flex items-center gap-2 text-sm text-gray-500;
+  }
+
+  .breadcrumb-item {
+    @apply hover:text-brand-maroon transition-colors;
+  }
+
+  .breadcrumb-separator {
+    @apply text-gray-300;
+  }
+}
+
+/* ─── Utility Classes ────────────────────────────────────────── */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-gradient-gold {
+    @apply bg-gradient-to-r from-brand-gold-dark via-brand-gold to-brand-gold-light bg-clip-text text-transparent;
+  }
+
+  .text-gradient-maroon {
+    @apply bg-gradient-to-r from-brand-maroon-dark to-brand-maroon bg-clip-text text-transparent;
+  }
+
+  .bg-pattern {
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23800020' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  .aspect-product {
+    aspect-ratio: 3 / 4;
+  }
+
+  .aspect-banner {
+    aspect-ratio: 16 / 6;
+  }
+}
