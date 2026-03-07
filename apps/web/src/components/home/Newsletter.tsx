@@ -19,7 +19,7 @@ export default function Newsletter() {
     setLoading(false);
     setSubscribed(true);
     setEmail('');
-    toast.success('You\'re now subscribed to Khaas Attire!', { icon: '🎉' });
+    toast.success("You're now subscribed to Khaas Attire!", { icon: '🎉' });
   };
 
   return (

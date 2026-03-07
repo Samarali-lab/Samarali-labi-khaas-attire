@@ -1,5 +1,6 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { PrismaService } from '../prisma/prisma.service';
 import * as crypto from 'crypto';
 
 interface JazzCashPaymentData {
@@ -18,7 +19,10 @@ interface PaymentInitResponse {
 
 @Injectable()
 export class PaymentsService {
-  constructor(private readonly configService: ConfigService) {}
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly prisma: PrismaService,
+  ) {}
 
   /**
    * Initiate a JazzCash payment
@@ -104,22 +108,26 @@ export class PaymentsService {
   }
 
   /**
-   * Validate a discount code
+   * Validate a discount code against the database
    */
   async validateDiscountCode(code: string, orderTotal: number) {
-    // This would typically query the database — simplified here
-    const validCodes: Record<string, { type: 'PERCENTAGE' | 'FIXED'; value: number; minOrder?: number }> = {
-      WELCOME10: { type: 'PERCENTAGE', value: 10, minOrder: 2000 },
-      EID2024: { type: 'PERCENTAGE', value: 15, minOrder: 5000 },
-      FLAT500: { type: 'FIXED', value: 500, minOrder: 3000 },
-    };
+    const codeData = await this.prisma.discountCode.findUnique({
+      where: { code: code.toUpperCase() },
+    });
 
-    const codeData = validCodes[code.toUpperCase()];
-    if (!codeData) {
+    if (!codeData || !codeData.active) {
       throw new BadRequestException('Invalid discount code');
     }
 
-    if (codeData.minOrder !== undefined && orderTotal < codeData.minOrder) {
+    if (codeData.expiresAt && codeData.expiresAt < new Date()) {
+      throw new BadRequestException('Discount code has expired');
+    }
+
+    if (codeData.maxUses !== null && codeData.usedCount >= codeData.maxUses) {
+      throw new BadRequestException('Discount code usage limit reached');
+    }
+
+    if (codeData.minOrder !== null && orderTotal < codeData.minOrder) {
       throw new BadRequestException(
         `Minimum order of PKR ${codeData.minOrder.toLocaleString()} required for this code`,
       );
@@ -132,8 +140,8 @@ export class PaymentsService {
 
     return {
       valid: true,
-      code: code.toUpperCase(),
-      type: codeData.type,
+      code: codeData.code,
+      type: codeData.type as 'PERCENTAGE' | 'FIXED',
       value: codeData.value,
       discount,
     };

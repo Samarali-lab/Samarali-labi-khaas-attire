@@ -19,7 +19,7 @@ export default function ContactPage() {
     setIsLoading(true);
     await new Promise((r) => setTimeout(r, 1500));
     setIsLoading(false);
-    toast.success('Message sent! We\'ll get back to you within 24 hours.');
+    toast.success("Message sent! We'll get back to you within 24 hours.");
     setFormData({ name: '', email: '', subject: '', message: '' });
   };
 
