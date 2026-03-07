@@ -31,10 +31,6 @@ interface CartStore {
   getItemCount: (productId: string, variantId: string | null) => number;
 }
 
-function getItemKey(productId: string, variantId: string | null): string {
-  return `${productId}:${variantId ?? 'no-variant'}`;
-}
-
 export const useCartStore = create<CartStore>()(
   persist(
     (set, get) => ({
@@ -130,6 +126,3 @@ export const useCartStore = create<CartStore>()(
     },
   ),
 );
-
-// Suppress unused variable warning
-void getItemKey;

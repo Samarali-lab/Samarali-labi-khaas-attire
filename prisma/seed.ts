@@ -110,7 +110,7 @@ async function main(): Promise<void> {
     },
   });
 
-  const bridialCollection = await prisma.collection.upsert({
+  const bridalCollection = await prisma.collection.upsert({
     where: { slug: 'bridal-formals' },
     update: {},
     create: {
@@ -442,7 +442,7 @@ async function main(): Promise<void> {
       collectionSlug === 'eid-collection-2024'
         ? eidCollection
         : collectionSlug === 'bridal-formals'
-          ? bridialCollection
+          ? bridalCollection
           : casualCollection;
 
     const createdProduct = await prisma.product.upsert({
