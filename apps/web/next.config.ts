@@ -20,8 +20,8 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  experimental: {
-    typedRoutes: true,
+  typescript: {
+    tsconfigPath: './tsconfig.json',
   },
 };
 

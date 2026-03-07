@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { Star, Shield, Truck, RefreshCw, Heart, Share2 } from 'lucide-react';
 
 interface ProductDetailPageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 // Mock product data - replace with actual API call
@@ -53,7 +53,8 @@ function getMockProduct(slug: string) {
 }
 
 export async function generateMetadata({ params }: ProductDetailPageProps): Promise<Metadata> {
-  const product = getMockProduct(params.slug);
+  const { slug } = await params;
+  const product = getMockProduct(slug);
   if (!product) return { title: 'Product Not Found' };
 
   return {
@@ -71,12 +72,13 @@ function formatPKR(amount: number) {
   return new Intl.NumberFormat('en-PK', { style: 'currency', currency: 'PKR', minimumFractionDigits: 0 }).format(amount);
 }
 
-export default function ProductDetailPage({ params }: ProductDetailPageProps) {
+export default async function ProductDetailPage({ params }: ProductDetailPageProps) {
+  const { slug } = await params;
   // For the mock, show a product if slug matches; otherwise show generic
-  const product = getMockProduct(params.slug) ?? {
+  const product = getMockProduct(slug) ?? {
     id: '1',
     name: 'Khaas Attire Product',
-    slug: params.slug,
+    slug,
     sku: 'KA-XXX',
     price: 5000,
     comparePrice: null,
