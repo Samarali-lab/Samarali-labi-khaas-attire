@@ -6,6 +6,9 @@
 
 /* ─── CSS Variables ──────────────────────────────────────────── */
 :root {
+  --font-inter: 'Inter', sans-serif;
+  --font-playfair: 'Playfair Display', serif;
+
   --color-primary: #800020;
   --color-primary-dark: #5c0016;
   --color-primary-light: #a0002a;
@@ -118,7 +121,7 @@
 
   /* Cards */
   .card-product {
-    @apply group relative overflow-hidden bg-white shadow-sm transition-all duration-300 hover:shadow-brand;
+    @apply relative overflow-hidden bg-white shadow-sm transition-all duration-300 hover:shadow-brand;
   }
 
   /* Form inputs */

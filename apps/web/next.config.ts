@@ -1,6 +1,8 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  // Enable standalone output for Docker / self-hosted deployments
+  output: 'standalone',
   images: {
     remotePatterns: [
       {
@@ -19,9 +21,6 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
     ],
-  },
-  typescript: {
-    tsconfigPath: './tsconfig.json',
   },
 };
 
