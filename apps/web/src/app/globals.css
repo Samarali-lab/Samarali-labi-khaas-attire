@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --brand-maroon: #800020;
+  --brand-emerald: #1B5E20;
+  --brand-gold: #C9A84C;
+  --brand-ivory: #FAF7F2;
+  --brand-charcoal: #2C2C2C;
+}
+
+body {
+  background-color: var(--brand-ivory);
+  color: var(--brand-charcoal);
+  font-family: 'Inter', sans-serif;
+}
+
+.font-serif {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-brand-maroon text-white px-6 py-3 font-medium tracking-wide hover:bg-opacity-90 transition-all duration-200;
+  }
+  .btn-outline {
+    @apply border border-brand-maroon text-brand-maroon px-6 py-3 font-medium tracking-wide hover:bg-brand-maroon hover:text-white transition-all duration-200;
+  }
+  .container-brand {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+}
