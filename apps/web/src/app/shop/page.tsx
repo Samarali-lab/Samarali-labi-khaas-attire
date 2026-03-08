@@ -17,10 +17,11 @@ interface SearchParams {
   maxPrice?: string;
 }
 
-export default function ShopPage({ searchParams }: { searchParams: SearchParams }) {
+export default async function ShopPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
+  const resolvedSearchParams = await searchParams;
   return (
     <Suspense fallback={<div className="container-brand py-20 text-center">Loading...</div>}>
-      <ShopClient searchParams={searchParams} />
+      <ShopClient searchParams={resolvedSearchParams} />
     </Suspense>
   );
 }

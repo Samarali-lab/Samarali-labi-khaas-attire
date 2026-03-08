@@ -1,6 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import multer from 'multer';
 import { v2 as cloudinary } from 'cloudinary';
+import type { UploadApiResponse, UploadApiErrorResponse } from 'cloudinary';
 import { authenticate, requireAdmin } from '../middleware/auth';
 import { AppError } from '../middleware/errorHandler';
 
@@ -20,7 +21,7 @@ const upload = multer({
     if (file.mimetype.startsWith('image/')) {
       cb(null, true);
     } else {
-      cb(new Error('Only image files are allowed'));
+      cb(new Error('Only image files are allowed'), false);
     }
   },
 });
@@ -35,19 +36,18 @@ uploadRouter.post(
     try {
       if (!req.file) throw new AppError('No file uploaded', 400);
 
-      const result = await new Promise<{ secure_url: string; public_id: string }>(
-        (resolve, reject) => {
-          cloudinary.uploader
-            .upload_stream(
-              { folder: 'khaas-attire', resource_type: 'image' },
-              (error, result) => {
-                if (error) reject(error);
-                else resolve(result as { secure_url: string; public_id: string });
-              },
-            )
-            .end(req.file!.buffer);
-        },
-      );
+      const result = await new Promise<UploadApiResponse>((resolve, reject) => {
+        cloudinary.uploader
+          .upload_stream(
+            { folder: 'khaas-attire', resource_type: 'image' },
+            (error: UploadApiErrorResponse | undefined, result: UploadApiResponse | undefined) => {
+              if (error) reject(error);
+              else if (!result) reject(new Error('Upload failed'));
+              else resolve(result);
+            },
+          )
+          .end(req.file!.buffer);
+      });
 
       res.json({
         success: true,
