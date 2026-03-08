@@ -99,6 +99,14 @@ userRouter.put('/addresses/:id', authenticate, async (req: Request, res: Respons
   try {
     const data = addressSchema.parse(req.body);
 
+    // Verify ownership before updating
+    const existing = await prisma.address.findFirst({
+      where: { id: req.params.id, userId: req.user!.id },
+    });
+    if (!existing) {
+      throw new AppError('Address not found', 404);
+    }
+
     if (data.isDefault) {
       await prisma.address.updateMany({
         where: { userId: req.user!.id },
@@ -107,7 +115,7 @@ userRouter.put('/addresses/:id', authenticate, async (req: Request, res: Respons
     }
 
     const address = await prisma.address.update({
-      where: { id: req.params.id, userId: req.user!.id },
+      where: { id: req.params.id },
       data,
     });
     res.json({ success: true, data: address });
@@ -119,7 +127,14 @@ userRouter.put('/addresses/:id', authenticate, async (req: Request, res: Respons
 /** Delete address */
 userRouter.delete('/addresses/:id', authenticate, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    await prisma.address.delete({ where: { id: req.params.id, userId: req.user!.id } });
+    // Verify ownership before deleting
+    const address = await prisma.address.findFirst({
+      where: { id: req.params.id, userId: req.user!.id },
+    });
+    if (!address) {
+      throw new AppError('Address not found', 404);
+    }
+    await prisma.address.delete({ where: { id: req.params.id } });
     res.json({ success: true, message: 'Address deleted' });
   } catch (error) {
     next(error);
